@@ -1,5 +1,6 @@
+import Router from "./router/Router"
 
 function App() {
-  return <div className=" text-orange-600 text-5xl">Hello world</div>
+  return <Router/>
 }
 export default App
