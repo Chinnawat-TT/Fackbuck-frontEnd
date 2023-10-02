@@ -5,19 +5,25 @@ import HomePage from "../pages/HomePage";
 import FriendPage from "../pages/FriendPage";
 import ProfilePage from "../pages/ProfilePage";
 import RedireactAuthenticated from "../features/auth/RedireactAuthenticated";
+import Authenticated from "../features/auth/Authenticated";
 
 const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <RedireactAuthenticated>
-        <LoginPage />
+      // children props ชนิดพิเศษ ไม่ต้องเขียน
+      <RedireactAuthenticated>               
+        <LoginPage />                             
       </RedireactAuthenticated>
     ),
   },
   {
     path: "/",
-    element: <Layout />,
+    element: (
+    <Authenticated>
+    <Layout />
+    </Authenticated>
+    ),
     children: [
       { path: "", element: <HomePage /> },
       { path: "friend", element: <FriendPage /> },

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URL } from'./env'
-import { getAccessToken } from '../utils/local-Storage'
+import { getAccessToken, removeAccessToken } from '../utils/local-Storage'
 
 axios.defaults.baseURL = BACKEND_URL;
 
@@ -13,12 +13,12 @@ axios.interceptors.request.use(config => {
 
 });
 
-axios.interceptors.response.use(
+axios.interceptors.response.use(                 // ฝั่ง response ถ้า success ไม่ได้ modify 
     response => response,
-    error => {
+    error => {                                   // error response 401 token fix  modify 
       if (error.response.status === 401) {
         removeAccessToken();
-        window.location.href = '/login';
+        window.location.href = '/login';          // redireact ด้วย java script 
       }
       return Promise.reject(error);
     }

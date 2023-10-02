@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify"
 import LoginButton from "./LoginButton";
 import LoginInput from "./LoginInput";
 import { useAuth } from "../../hooks/use-Auth";
@@ -14,7 +15,9 @@ export default function LoginForm() {
 
   const handleSubmitForm= event =>{
     event.preventDefault();
-    login(input)
+    login(input).catch( err =>{
+      toast.error(err.response.data.message)
+    })
   }
   return (
     <form className="grid gap-4" onSubmit={handleSubmitForm}>
