@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 import FormButton from "./FormButton";
 
-export default function PictureForm({ title, children }) {
+export default function PictureForm({ title, children ,initialSrc,onSave}) {
   const inputEl = useRef(null);
   const [file,setFile]=useState(null);
 
@@ -24,7 +24,7 @@ export default function PictureForm({ title, children }) {
         <h5 className="text-xl font-bold">{title}</h5>
         <div>
         {file && <> 
-        <FormButton>Save</FormButton>
+        <FormButton onClick={()=>onSave(file)}>Save</FormButton>
         <FormButton onClick={ ()=>{
           inputEl.current.value = ""                            //ทำให้ เลือกรูปเดิมได้
           setFile(null)
@@ -40,7 +40,7 @@ export default function PictureForm({ title, children }) {
         </div>
       </div>
       <div className=" flex justify-center">
-        {children(file ? URL.createObjectURL(file) : undefined)}
+        {children(file ? URL.createObjectURL(file) : initialSrc , ()=> inputEl.current.click())}
         </div>
     </div>
   );

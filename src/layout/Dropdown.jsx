@@ -37,13 +37,13 @@ export default function Dropdown() {
   return (
     <div className="relative" ref={dropDownEl}>
       <div className=" cursor-pointer" onClick={()=>setIsOpen(!isOpen)}>
-        <Avatar />
+        <Avatar src={authUser.profileImage}/>
       </div>
       {isOpen && (
         <div className="w-96 absolute bg-white right-0 translate-y-1 border rounded-xl shadow-xl p-2">
-          <Link to="/profile/aaaaaa" onClick={ ()=>setIsOpen(false)}>
+          <Link to={`/profile/${authUser.id}`} onClick={ ()=>setIsOpen(false)}>
             <div className="flex gap-4 p-2 items-center rounded-xl hover:bg-gray-100">
-              <Avatar className="h-14" />
+              <Avatar className="h-14" src={authUser.profileImage}/>
               <div>
                 <div className="font-semibold">{authUser.firstName} {authUser.lastName}</div>
                 <div className="text-sm text-gray-500">See your profile</div>
