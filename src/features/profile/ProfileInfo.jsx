@@ -1,10 +1,21 @@
+import { Link } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import AuthUserAction from "./AuthUserAction";
 import FriendAction from "./FriendAction";
 import ReceiverAction from "./ReceiverAction";
 import RequesterAction from "./RequesterAction";
 import UnknownAction from "./UnknownAction";
-export default function ProfileInfo({ profileUser }) {
+
+
+export default function ProfileInfo({ profileUser , statusWithAuthUser , setStatusWithAuthUser , profileFriend}) {
+  
+  const mappingObj ={
+    AUTH_USER: <AuthUserAction/>,
+    UNKNOWN :<UnknownAction setStatusWithAuthUser={setStatusWithAuthUser}/>,
+    FRIEND : <FriendAction setStatusWithAuthUser={setStatusWithAuthUser}/>,
+    REQUESTER : <RequesterAction setStatusWithAuthUser={setStatusWithAuthUser}/>,
+    RECEIVER : <ReceiverAction setStatusWithAuthUser={setStatusWithAuthUser}/>
+  }
   return (
     <div className=" max-w-6xl mx-auto flex gap-4 px-4 items-end">
       <div className=" -mt-8">
@@ -13,21 +24,18 @@ export default function ProfileInfo({ profileUser }) {
       <div className=" flex-1">
         <h2 className=" text-2xl font-bold">{profileUser?.firstName} {profileUser.lastName}</h2>
         <span className=" block text-gray-500 font-semibold mb-2">
-          6 Friend
+          {profileFriend.length} Friend
         </span>
         <div className=" flex  -space-x-2">
-          <Avatar className=" h-8" />
-          <Avatar className=" h-8" />
-          <Avatar className=" h-8" />
-          <Avatar className=" h-8" />
+          {profileFriend.map(el => (
+            <Link key={el.id} to={`/profile/${el.id}`}>
+            <Avatar className=" h-8" src = {el.profileImage}/> 
+          </Link>
+          ))}
         </div>
       </div>
       <div>
-        {/* <ReceiverAction/> */}
-        {/* <RequesterAction/> */}
-        {/* <FriendAction/> */}
-        {/* <UnknownAction/> */}
-        <AuthUserAction/>
+      {mappingObj[statusWithAuthUser]}
       </div>
     </div>
   );
