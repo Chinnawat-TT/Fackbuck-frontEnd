@@ -8,7 +8,7 @@ import PostForm from "./PostForm";
 function Button({ children, onClick }) {
   return (
     <div
-      className=" bg-gray-200 hover:bg-gray-300 flex-1 rounded-full px-3 py-5 text-gray-500 cursor-pointer flex items-center"
+      className=" bg-gray-200 hover:bg-gray-300 flex-1 rounded-full px-3 py-2 text-gray-500 cursor-pointer flex items-center"
       onClick={onClick}
     >
       {children}
@@ -30,7 +30,7 @@ export default function CreatePostButton() {
         maxWidth={32}
         onClose={() => setIsOpen(false)}
       >
-        <PostForm/>
+        <PostForm onSuccess ={()=> setIsOpen(false)}/>
       </Modal>
     </div>
   );

@@ -1,17 +1,47 @@
 import { useRef, useState } from "react";
 import { useAuth } from "../../hooks/use-Auth";
 import { ImageIcon } from "../../icons";
+import axios from "../../config/axios";
+import Loading from "../../components/Loading";
 
-export default function PostForm() {
+export default function PostForm({ onSuccess }) {
   const [file, setFile] = useState(null);
+  const [message, setMessage]= useState('')
+  const [loading,setLoading]=useState(false)
   const { authUser } = useAuth();
   const fileEl = useRef(null);
+
+  const handleSubmitForm = async event =>{
+    
+try {
+    event.preventDefault();
+    // ต้อง validate ก่อน ไปทำเอง
+    const formData = new FormData()
+    if(file){
+        formData.append('image',file)
+    }
+    if(message){
+        formData.append('message',message)
+    }
+    setLoading(true)
+    await axios.post('/post',formData)
+    onSuccess()
+} catch (err) {
+    console.log(err)
+} finally {
+    setLoading(false)
+}
+  }
   return (
-    <form className=" flex flex-col gap-4">
+    <>  
+    { loading && <Loading/>}
+    <form className=" flex flex-col gap-4" onSubmit={handleSubmitForm}>
       <textarea
         className=" block w-full outline-none resize-none"
         rows="5"
         placeholder={`what's on your mind, ${authUser.firstName}`}
+        value={message}
+        onChange={ event => setMessage(event.target.value)}
       />
 
       {file ? (
@@ -32,6 +62,7 @@ export default function PostForm() {
       />
       <CreateButton>Post</CreateButton>
     </form>
+    </>
   );
 }
 function CreateButton({ children }) {
