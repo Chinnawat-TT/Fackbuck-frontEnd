@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { useAuth } from "../../hooks/use-Auth";
 import { ImageIcon } from "../../icons";
-import axios from "../../config/axios";
+
 import Loading from "../../components/Loading";
 
-export default function PostForm({ onSuccess }) {
+export default function PostForm({ onSuccess , onSubmit }) {
   const [file, setFile] = useState(null);
   const [message, setMessage]= useState('')
   const [loading,setLoading]=useState(false)
@@ -24,7 +24,7 @@ try {
         formData.append('message',message)
     }
     setLoading(true)
-    await axios.post('/post',formData)
+    await onSubmit(formData)
     onSuccess()
 } catch (err) {
     console.log(err)

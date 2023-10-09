@@ -2,28 +2,53 @@ import { Link } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { EllipsisIcon } from "../../icons";
 import formatTimeAgo from "../../utils/time-ago";
+import useDropdown from "../../hooks/use-dropdown";
+import { useAuth } from "../../hooks/use-Auth";
 
+export default function PostHeader({ postObj , deletePost }) {
+  const { isOpen, dropDownEl ,setIsOpen} = useDropdown();
+  const { authUser } = useAuth()
 
-export default function PostHeader({ postObj }) {
+  const handleClickDelete=()=>{
+    deletePost(postObj.id)
+
+  }
   return (
     <div className=" flex gap-4">
       <Link to={`/profile/${postObj.user.id}`}>
-        <Avatar src={postObj.user.profileImage}/>
+        <Avatar src={postObj.user.profileImage} />
       </Link>
 
       <div className=" flex flex-col flex-1">
-        <Link to={`/profile/${postObj.user.id}`}  className=" hover:underline text-sm font-semibold self-start">{postObj.user.firstName} {postObj.user.lastName}</Link>
-        <small className=" text-gray-400 text-xs">{formatTimeAgo(postObj.createdAt)}</small>
+        <Link
+          to={`/profile/${postObj.user.id}`}
+          className=" hover:underline text-sm font-semibold self-start"
+        >
+          {postObj.user.firstName} {postObj.user.lastName}
+        </Link>
+        <small className=" text-gray-400 text-xs">
+          {formatTimeAgo(postObj.createdAt)}
+        </small>
       </div>
-      <div className=" relative">
-        <div className=" h-8 w-8 hover:bg-gray-200 cursor-pointer rounded-full flex items-center justify-center">
-            <EllipsisIcon className=" fill-gray-400"/>
+      { authUser.id === postObj.user.id && <div className=" relative" ref={dropDownEl}>
+        <div 
+        onClick={()=>setIsOpen(!isOpen)}
+        className=" h-8 w-8 hover:bg-gray-200 cursor-pointer rounded-full flex items-center justify-center" >
+          <EllipsisIcon className=" fill-gray-400" />
         </div>
-        <ul className=" bg-white absolute right-0 translate-y-1 border rounded-lg p-2 shadow w-36 hidden">
-            <li className=" hover:bg-gray-200 rounded-lg p-2 text-sm font-semibold cursor-pointer">Edit</li>
-            <li className=" hover:bg-gray-200 rounded-lg p-2 text-sm font-semibold cursor-pointer">Delete</li>
-        </ul>
-      </div>
+        {isOpen && (
+          <ul className=" bg-white absolute right-0 translate-y-1 border rounded-lg p-2 shadow w-36 ">
+            <li className=" hover:bg-gray-200 rounded-lg p-2 text-sm font-semibold cursor-pointer">
+              Edit
+            </li>
+            <li 
+            onClick={handleClickDelete}
+            className=" hover:bg-gray-200 rounded-lg p-2 text-sm font-semibold cursor-pointer">
+              Delete
+            </li>
+          </ul>
+        )}
+      </div>}
     </div>
   );
 }

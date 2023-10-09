@@ -15,7 +15,7 @@ function Button({ children, onClick }) {
     </div>
   );
 }
-export default function CreatePostButton() {
+export default function CreatePostButton( { createPost }) {
   const { authUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -23,14 +23,14 @@ export default function CreatePostButton() {
       <Link to={`/profile/${authUser.id}`}>
         <Avatar src={authUser.profileImage} />
       </Link>
-      <Button onClick={() => setIsOpen(true)}> What's on your mind, {authUser.firstName}</Button>
+      <Button onClick={() => setIsOpen(true)}> What&#39;s on your mind, {authUser.firstName}</Button>
       <Modal
         title="Create post"
         open={isOpen}
         maxWidth={32}
         onClose={() => setIsOpen(false)}
       >
-        <PostForm onSuccess ={()=> setIsOpen(false)}/>
+        <PostForm onSuccess ={()=> setIsOpen(false)} onSubmit = { createPost }/>
       </Modal>
     </div>
   );
